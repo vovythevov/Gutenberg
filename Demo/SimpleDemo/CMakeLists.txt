@@ -14,35 +14,31 @@
 #
 #============================================================================
 
-project(GutenbergLib)
+project(SimpleDemo)
+
+find_package(Qt4)
+include(${QT_USE_FILE})
+
+if (NOT GUTENBERG_SOURCE_DIR)
+  find_package(Gutenberg)
+endif()
+
+include(GutenbergBuildFontMacro)
 
 # -- Build the library/executable
-set(KIT_SRCS
-  QFontIconParser.cpp
-  QFontIconParser.h
-  )
-
-set(KIT_MOC_SRCS
-  QFontIconParser.h
-  )
-
-QT4_WRAP_CPP(KIT_MOC_OUTFILES ${KIT_MOC_SRCS})
-
 include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
   )
 
-set(KIT_LIB_NAME GutenbergLib)
-add_library(${KIT_LIB_NAME} ${KIT_SRCS} ${KIT_MOC_OUTFILES})
-target_link_libraries(${KIT_LIB_NAME} ${QT_LIBRARIES})
+QT4_ADD_RESOURCES(KIT_RESOURCES_RCC test.qrc)
+set(KIT_EXECUTABLE_NAME SimpleDemo)
+add_executable(${KIT_EXECUTABLE_NAME} main.cpp ${KIT_RESOURCES_RCC})
+target_link_libraries(${KIT_EXECUTABLE_NAME} ${QT_LIBRARIES})
 
-if (NOT GUTENBERG_LIBRARY_ONLY)
+GutenbergBuildFontMacro(
+  TARGET ${KIT_EXECUTABLE_NAME}
+  FONT_CSS_PATH ${CMAKE_CURRENT_SOURCE_DIR}/test.css
+  FONT_HEADER_PATH ${CMAKE_CURRENT_BINARY_DIR}/GutenbergTest.h
+  )
 
-  set(KIT_EXECUTABLE_NAME Gutenberger)
-  add_executable(${KIT_EXECUTABLE_NAME} main.cpp)
-  target_link_libraries(${KIT_EXECUTABLE_NAME} ${KIT_LIB_NAME})
-
-  set_property(GLOBAL PROPERTY GUTENBERG_GUTENBERGER_DIR ${CMAKE_CURRENT_BINARY_DIR})
-
-endif()

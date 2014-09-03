@@ -71,40 +71,46 @@ int main(int argc, char* argv[])
     << "{\n"
     << "public:\n"
     << "static QString unicodeFromIconName(QString name)\n"
-    << "{\n"
-    << "  switch (name)\n"
-    << "    {\n";
+    << "  {\n";
   QMap<QString, QString>::iterator it;
   for (it = nameToIcon.begin(); it != nameToIcon.end(); ++it)
     {
-    stream
-      << "    case " << it.key() << ":\n"
-      << "      { return \"" << it.value() << "\"; }\n";
+    if (it == nameToIcon.begin())
+      {
+      stream << "    if (name == \"" << it.key() << "\")\n";
+      }
+    else
+      {
+      stream << "    else if (name == \"" << it.key() << "\")\n";
+      }
+
+    stream  << "        { return \"" << it.value() << "\"; }\n";
     }
 
-  stream << "    default:\n"
-    << "      { QCritical()<< \"Icon not found\"; return \"\"; }\n"
-    << "    }\n"
-    << "};\n";
+  stream << "     else\n"
+    << "        { qCritical() << \"Icon not found\"; return \"\"; }\n"
+    << "  };\n";
 
   stream << "\n"
-    << "static QChar icon(QString name)\n"
-    << "{\n"
-    << "  QString unicode = Gutenberg::unicodeFromIconName(name);\n"
-    << "  if (unicode.isEmpty())\n"
-    << "    {\n"
-    << "    return 0;\n"
-    << "    }\n"
+    << "  static QChar icon(QString name)\n"
+    << "  {\n"
+    << "    QString unicode = Gutenberg::unicodeFromIconName(name);\n"
+    << "    if (unicode.isEmpty())\n"
+    << "      {\n"
+    << "      return 0;\n"
+    << "      }\n"
     << "\n"
-    << "  bool ok;\n"
-    << "  QString icon = unicode.toInt(&ok, 16);\n"
-    << "  if (!ok)\n"
-    << "    {\n"
-    << "    qCritical() << \"Error while converting: \" << unicode;\n"
-    << "    return 0;\n"
-    << "    }\n"
-    << "  return icon;\n"
-    << "}"
+    << "    bool ok;\n"
+    << "    QChar icon = unicode.toInt(&ok, 16);\n"
+    << "    if (!ok)\n"
+    << "      {\n"
+    << "      qCritical() << \"Error while converting: \" << unicode;\n"
+    << "      return 0;\n"
+    << "      }\n"
+    << "    return icon;\n"
+    << "  };\n"
+    << "};\n"
+    << "#endif\n"
     << "\n";
 
   headerFile.close();
