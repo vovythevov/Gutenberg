@@ -97,26 +97,11 @@ macro(GutenbergFontAwesomeMacro)
     message(FATAL_ERROR "Failed to unpack zip file !")
   endif()
 
-  set(GUTENBERG_CSS_FILE "${MY_GUTENBERG_DESTINATION_DIR}/font-awesome-${MY_GUTENBERG_FONT_AWESOME_VERSION}/css/font-awesome.css")
-  set(GUTENBERG_FONT_FILE "${MY_GUTENBERG_DESTINATION_DIR}/font-awesome-${MY_GUTENBERG_FONT_AWESOME_VERSION}/fonts/fontawesome-webfont.ttf")
-
-  if (NOT MY_GUTENBERG_CSS_FILE_ALIAS)
-    set(MY_GUTENBERG_CSS_FILE_ALIAS "font-awesome.css")
-  endif ()
-  if (NOT MY_GUTENBERG_FONT_FILE_ALIAS)
-    set(MY_GUTENBERG_FONT_FILE_ALIAS "fontawesome-webfont.ttf")
-  endif ()
-  configure_file(
-    ${GUTENBERG_CMAKE_DIR}/GutenbergResource.qrc.in
-    ${MY_GUTENBERG_DESTINATION_DIR}/GutenbergResource.qrc
+  include(GutenbergConfigureDownloadedFontMacro)
+  GutenbergConfigureDownloadedFontMacro(
+    DESTINATION_DIR ${MY_GUTENBERG_DESTINATION_DIR}
+    CSS_FILE "${MY_GUTENBERG_DESTINATION_DIR}/font-awesome-${MY_GUTENBERG_FONT_AWESOME_VERSION}/css/font-awesome.css"
+    FONT_FILE "${MY_GUTENBERG_DESTINATION_DIR}/font-awesome-${MY_GUTENBERG_FONT_AWESOME_VERSION}/fonts/fontawesome-webfont.ttf"
     )
-
-  configure_file(
-    ${GUTENBERG_CMAKE_DIR}/GutenbergResource.qrc.in
-    ${MY_GUTENBERG_DESTINATION_DIR}/GutenbergResource.qrc
-    )
-
-
-  set(GUTENBERG_RESOURCE_FILE ${MY_GUTENBERG_DESTINATION_DIR}/GutenbergResource.qrc)
 
 endmacro()
