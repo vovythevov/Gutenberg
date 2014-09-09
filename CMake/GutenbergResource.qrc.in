@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+  <qresource>
+    <file alias="@MY_GUTENBERG_CSS_FILE_ALIAS@">@GUTENBERG_CSS_FILE@</file>
+    <file alias="@MY_GUTENBERG_FONT_FILE_ALIAS@">@GUTENBERG_FONT_FILE@</file>
+  </qresource>
+</RCC>

@@ -75,20 +75,13 @@ int main(int argc, char* argv[])
   QMap<QString, QString>::iterator it;
   for (it = nameToIcon.begin(); it != nameToIcon.end(); ++it)
     {
-    if (it == nameToIcon.begin())
-      {
-      stream << "    if (name == \"" << it.key() << "\")\n";
-      }
-    else
-      {
-      stream << "    else if (name == \"" << it.key() << "\")\n";
-      }
-
-    stream  << "        { return \"" << it.value() << "\"; }\n";
+    stream << "    if (name == \"" << it.key() << "\")\n"
+      << "      return \"" << it.value() << "\";\n";
     }
 
-  stream << "     else\n"
-    << "        { qCritical() << \"Icon not found\"; return \"\"; }\n"
+  stream << "\n"
+    << "    qCritical() << \"Icon not found\";\n"
+    << "    return \"\";\n"
     << "  };\n";
 
   stream << "\n"

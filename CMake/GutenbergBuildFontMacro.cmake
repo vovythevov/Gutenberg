@@ -36,6 +36,17 @@ macro(GutenbergBuildFontMacro)
     ${ARGN}
     )
 
+  set(NECESSARY_ARGS
+    TARGET
+    FONT_CSS_PATH
+    FONT_HEADER_PATH
+    )
+  foreach(arg ${NECESSARY_ARGS})
+    if (NOT ${MY_GUTENBERG_${ARGS}})
+      message(FATAL_ERROR "${ARGS} must be given !")
+    endif()
+  endforeach()
+
   add_custom_command(
     TARGET ${MY_GUTENBERG_TARGET}
     PRE_BUILD
