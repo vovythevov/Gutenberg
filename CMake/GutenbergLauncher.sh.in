@@ -14,8 +14,8 @@
 #
 #############################################################################
 
-export PATH#"@QT_BIN_DIR@;@GUTENBERG_BIN_DIR@;${PATH}"
+export PATH="@QT_BIN_DIR@:@GUTENBERG_BIN_DIR@:${PATH}"
 
 $*
-RET#$?
+RET=$?
 exit $RET

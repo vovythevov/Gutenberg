@@ -47,12 +47,13 @@ macro(GutenbergBuildFontMacro)
     endif()
   endforeach()
 
-  add_custom_command(
-    TARGET ${MY_GUTENBERG_TARGET}
-    PRE_BUILD
+  set(GUTENBERG_CUSTOM_TARGET "Gutenberger_${MY_GUTENBERG_TARGET}")
+  add_custom_target(
+    ${GUTENBERG_CUSTOM_TARGET}
     COMMAND ${GUTENBERG_LAUNCH_COMMAND} Gutenberger ${MY_GUTENBERG_FONT_CSS_PATH} ${MY_GUTENBERG_FONT_HEADER_PATH}
     WORKING_DIRECTORY ${GUTENBERG_BUILD_DIR}
     )
+  add_dependencies(${MY_GUTENBERG_TARGET} ${GUTENBERG_CUSTOM_TARGET})
 
   get_filename_component(FONT_DIR ${MY_GUTENBERG_FONT_HEADER_PATH} DIRECTORY)
   include_directories(${FONT_DIR})
