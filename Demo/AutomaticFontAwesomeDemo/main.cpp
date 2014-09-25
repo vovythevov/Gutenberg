@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 {
   QApplication app( argc, argv );
 
-  QFontDatabase::addApplicationFont(":/fontawesome-webfont.ttf");
+  qDebug() << QFontDatabase::addApplicationFont(":/Gutenberg.ttf");
 
   QFont font;
   font.fromString("FontAwesome");

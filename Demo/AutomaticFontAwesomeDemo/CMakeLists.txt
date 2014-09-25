@@ -37,7 +37,7 @@ include_directories(
 
 QT4_ADD_RESOURCES(KIT_RESOURCES_RCC ${GUTENBERG_RESOURCE_FILE})
 set(KIT_EXECUTABLE_NAME AutomaticFontAwesomeDemo)
-add_executable(${KIT_EXECUTABLE_NAME} main.cpp)
+add_executable(${KIT_EXECUTABLE_NAME} main.cpp ${KIT_RESOURCES_RCC})
 target_link_libraries(${KIT_EXECUTABLE_NAME} ${QT_LIBRARIES})
 
 GutenbergBuildFontMacro(
