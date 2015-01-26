@@ -28,6 +28,8 @@
 # FONT_AWESOME_VERSION: String version used for font awesome. Default is "4.2.0".
 # URL: String of the URL to download font-awesome. Default is
 # fortawesome.github.io/Font-Awesome/assets/font-awesome-${MY_GUTENBERG_FONT_AWESOME_VERSION}.zip
+# ZIP_FILE: Path to the font awesome zip file. If no ZIP_FILE is given, font
+# awesome will be automatically downloaded from the given (or not) URL.
 #
 # This macro will define the following variables:
 # GUTENBERG_FONT_AWESOME_DIR: Path to the unpacked font awesome dir
@@ -46,6 +48,7 @@ macro(GutenbergFontAwesomeMacro)
       FONT_FILE_ALIAS
       FONT_AWESOME_VERSION
       URL
+      ZIP_FILE
    )
 
   set(multiValueArg)
@@ -74,21 +77,23 @@ macro(GutenbergFontAwesomeMacro)
     set(MY_GUTENBERG_CUSTOM_URL "fortawesome.github.io/Font-Awesome/assets/font-awesome-${MY_GUTENBERG_FONT_AWESOME_VERSION}.zip")
   endif()
 
-  set(ZIP_FILE "${MY_GUTENBERG_DESTINATION_DIR}/FontAwesome.zip")
-  file(DOWNLOAD ${MY_GUTENBERG_CUSTOM_URL} ${ZIP_FILE})
+  if (NOT MY_GUTENBERG_ZIP_FILE)
+    set(MY_GUTENBERG_ZIP_FILE "${MY_GUTENBERG_DESTINATION_DIR}/FontAwesome.zip")
+    file(DOWNLOAD ${MY_GUTENBERG_CUSTOM_URL} ${MY_GUTENBERG_ZIP_FILE})
 
-  # Check for download error
-  list(GET STATUS 0 ERROR_CODE)
-  if(ERROR_CODE)
-    file(REMOVE ${ZIP_FILE})
-    message(FATAL_ERROR "Failed to download file !")
+    # Check for download error
+    list(GET STATUS 0 ERROR_CODE)
+    if(ERROR_CODE)
+      file(REMOVE ${MY_GUTENBERG_ZIP_FILE})
+      message(FATAL_ERROR "Failed to download file !")
+    endif()
   endif()
 
   set(GUTENBERG_FONT_AWESOME_DIR "${MY_GUTENBERG_DESTINATION_DIR}/FontAwesome")
   execute_process(
-    COMMAND ${CMAKE_COMMAND} -E tar xzf ${ZIP_FILE}
+    COMMAND ${CMAKE_COMMAND} -E tar xzf ${MY_GUTENBERG_ZIP_FILE}
     OUTPUT ${GUTENBERG_FONT_AWESOME_DIR}
-    DEPENDS ${ZIP_FILE}
+    DEPENDS ${MY_GUTENBERG_ZIP_FILE}
     WORKING_DIRECTORY ${MY_GUTENBERG_DESTINATION_DIR}
     RESULT_VARIABLE ERROR_CODE
     )
